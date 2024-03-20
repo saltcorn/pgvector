@@ -1,0 +1,28 @@
+{
+  "name": "@saltcorn/pgvector",
+  "version": "0.1.0",
+  "description": "Vector embeddings type for Saltcorn",
+  "main": "index.js",
+  "dependencies": {
+    "@saltcorn/data": "^0.9.4",
+    "@saltcorn/markup": "^0.9.4"
+  },
+  "author": "Tom Nielsen",
+  "license": "MIT",
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "no-unused-vars": "off",
+      "no-case-declarations": "off",
+      "no-empty": "warn",
+      "no-fallthrough": "warn"
+    }
+  }
+}
