@@ -7,7 +7,7 @@ const ppArray = (v) => {
   return "";
 };
 
-const [pgvector] = {
+const pgvector = {
   name: "PGVector",
   sql_name: ({ dimensions }) => `vector(${+dimensions})`,
   fieldviews: {
