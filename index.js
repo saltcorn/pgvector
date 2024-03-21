@@ -1,5 +1,7 @@
 const { div, pre, code, text, textarea } = require("@saltcorn/markup/tags");
 const { features, getState } = require("@saltcorn/data/db/state");
+//const db = require("@saltcorn/data/db");
+const { sqlFun, sqlBinOp } = require("@saltcorn/db-common/internal");
 
 const ppArray = (v) => {
   if (!v) return "";
@@ -10,6 +12,11 @@ const ppArray = (v) => {
 const pgvector = {
   name: "PGVector",
   sql_name: ({ dimensions }) => `vector(${+dimensions})`,
+  distance_operators: {
+    nearL2: sqlBinOp("<->", "target", "field"),
+    inner: sqlBinOp("<#>", "target", "field"),
+  },
+
   fieldviews: {
     show: {
       isEdit: false,
@@ -54,4 +61,21 @@ module.exports = {
   sc_plugin_api_version: 1,
   types: [pgvector],
   plugin_name: "pgvector",
+  /*onLoad() {
+    console.log("load");
+    db.pool.on("connect", async function (client) {
+      // https://github.com/pgvector/pgvector-node/blob/master/src/pg/index.js
+      const result = await client.query(
+        "SELECT typname, oid, typarray FROM pg_type WHERE typname = $1",
+        ["vector"]
+      );
+      if (result.rowCount < 1) {
+        throw new Error("vector type not found in the database");
+      }
+      const oid = result.rows[0].oid;
+      client.setTypeParser(oid, "text", function (value) {
+        return JSON.stringify(value);
+      });
+    });
+  },*/
 };
