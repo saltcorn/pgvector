@@ -1,7 +1,7 @@
 const { div, pre, code, text, textarea } = require("@saltcorn/markup/tags");
 const { features, getState } = require("@saltcorn/data/db/state");
 //const db = require("@saltcorn/data/db");
-const { sqlFun, sqlBinOp } = require("@saltcorn/db-common/internal");
+const { sqlBinOp } = require("@saltcorn/data/plugin-helper");
 
 const ppArray = (v) => {
   if (!v) return "";
@@ -12,7 +12,7 @@ const ppArray = (v) => {
 const pgvector = {
   name: "PGVector",
   sql_name: ({ dimensions }) => `vector(${+dimensions})`,
-  distance_operators: {
+  distance_operators: sqlBinOp && {
     nearL2: sqlBinOp("<->", "target", "field"),
     inner: sqlBinOp("<#>", "target", "field"),
   },
