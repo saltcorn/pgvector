@@ -49,8 +49,8 @@ const pgvector = {
   ],
   read: (v, attrs) => {
     switch (typeof v) {
-      case "string":
-        return v ? v.split(",") : undefined;
+      //case "string":
+      //  return v ? v.split(",") : undefined;
       default:
         return v;
     }
