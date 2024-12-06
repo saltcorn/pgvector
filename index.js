@@ -11,6 +11,7 @@ const ppArray = (v) => {
 
 const pgvector = {
   name: "PGVector",
+  setTypeAttributesForCalculatedFields: true,
   sql_name: sqlBinOp ? ({ dimensions }) => `vector(${+dimensions})` : "vector", //legacy
   distance_operators: sqlBinOp && {
     nearL2: sqlBinOp("<->", "target", "field"),
