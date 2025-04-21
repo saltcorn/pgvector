@@ -1,6 +1,6 @@
 const { div, pre, code, text, textarea } = require("@saltcorn/markup/tags");
 const { features, getState } = require("@saltcorn/data/db/state");
-//const db = require("@saltcorn/data/db");
+const db = require("@saltcorn/data/db");
 const { sqlBinOp } = require("@saltcorn/data/plugin-helper");
 
 const ppArray = (v) => {
@@ -16,6 +16,18 @@ const pgvector = {
   distance_operators: sqlBinOp && {
     nearL2: sqlBinOp("<->", "target", "field"),
     inner: sqlBinOp("<#>", "target", "field"),
+  },
+  discovery_match: async (info_schema_col) => {
+    if (info_schema_col.udt_name === "vector") {
+      const { rows } = await db.query(
+        `select atttypmod from pg_attribute 
+        where attname='${info_schema_col.column_name}' 
+        and attrelid= 
+          ( SELECT '"${info_schema_col.table_schema}"."${info_schema_col.table_name}"'::regclass::oid);`
+      );
+      const dims = rows[0].atttypmod;
+      return { type: "PGVector", attributes: { dimensions: dims } };
+    }
   },
 
   fieldviews: {
